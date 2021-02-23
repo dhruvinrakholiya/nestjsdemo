@@ -6,6 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "tsc": "tsc",
+    "postinstall": "npm run tsc",
     "heroku:prebuild": "rimraf dist",
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
