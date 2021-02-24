@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Put, Req, Res, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Roles } from 'src/auth/Util/role.decoretor';
-import { RolesGuard } from 'src/auth/Util/roles.guard';
+import { Roles } from '../auth/Util/role.decoretor';//src/auth/Util/role.decoretor
+import { RolesGuard } from '../auth/Util/roles.guard';
 import { UsersService } from './users.service';
 import { SignUpForUsers } from "../auth/Validation/auth.dto";
 
