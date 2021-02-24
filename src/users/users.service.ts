@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Request, Response } from "express";
 import { Model } from 'mongoose';
-import { Users } from 'src/auth/interface/users.interface';
-
+import { Users } from '../auth/interface/users.interface';//src/auth/interface/users.interface
 
 @Injectable()
 export class UsersService {
@@ -39,12 +38,12 @@ export class UsersService {
     }
 
     //Search Data
-    async searchData(req:Request,res:Response){
+    async searchData(req: Request, res: Response) {
         try {
             let page: any = req.query.page
             let perPage: any = req.query.perPage
-            let {search,role}: any = req.body
-            
+            let { search, role }: any = req.body
+
 
             if (page == 0) throw new Error('page is Zero')
             if (perPage == 0) throw new Error('perPage is Zero')
@@ -53,10 +52,10 @@ export class UsersService {
                 perPage = Number(perPage)
             }
             const qryObject = {
-                $or:[
-                    { first_name:{$regex:`^${search}`,$options:'i'} },
-                    { last_name:{$regex:`^${search}`,$options:'i'} },
-                    { role:{$regex:`^${role}`,$options:'i'} }
+                $or: [
+                    { first_name: { $regex: `^${search}`, $options: 'i' } },
+                    { last_name: { $regex: `^${search}`, $options: 'i' } },
+                    { role: { $regex: `^${role}`, $options: 'i' } }
                 ]
             }//{ first_name: { $regex: `^${firstName}`, $options: 'i' } }
             const totalData = await this.usersModel.find(qryObject).countDocuments();
