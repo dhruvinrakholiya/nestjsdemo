@@ -4,9 +4,6 @@
   "description": "",
   "author": "",
   "private": true,
-  "engines": {
-    "node": "15.x"
-  },
   "license": "UNLICENSED",
   "scripts": {
     "heroku:prebuild": "rimraf dist",
