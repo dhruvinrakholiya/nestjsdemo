@@ -12,6 +12,7 @@ async function bootstrap() {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
     next();
   });
+  console.log('process.env.PORT :>> ', process.env.PORT);
   await app.listen(process.env.PORT || 3000, function () {
     console.log('process.env.PORT :>> ', process.env.PORT);
     console.log("Express server listening on port %d in mode", this.address().port);
