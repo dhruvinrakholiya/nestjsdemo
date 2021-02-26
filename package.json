@@ -6,7 +6,6 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    
     "heroku:prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -23,7 +22,6 @@
     "prestart:staging": "rimraf dist && npm run build",
     "start:staging": "node dist/main.js",
     "postinstall": "npm run prestart:staging"
-    
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",
@@ -36,6 +34,7 @@
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "dotenv": "^8.2.0",
     "mongoose": "^5.11.17",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",

@@ -4,11 +4,15 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from "@nestjs/mongoose";
-
+import { config } from 'dotenv';
+console.log('process.env.MONGODBURL :>> ', process.env.MONGODBURL);
+config();
 @Module({
   imports: [UsersModule, AuthModule,
-    MongooseModule.forRoot('mongodb+srv://angulerdemo:angulerdemo@123@cluster0.kyqeb.mongodb.net/anguler?retryWrites=true&w=majority'),],
+    MongooseModule.forRoot(process.env.MONGODBURL)],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule { 
+  
+}
