@@ -44,22 +44,41 @@ export class UsersService {
             let perPage: any = req.query.perPage
             let { search, role }: any = req.body
 
-
             if (page == 0) throw new Error('page is Zero')
             if (perPage == 0) throw new Error('perPage is Zero')
             if (typeof page !== 'number' && typeof perPage !== 'number') {
                 page = Number(page);
                 perPage = Number(perPage)
             }
-            const qryObject = {
-                $or: [
-                    { first_name: { $regex: `^${search}`, $options: 'i' } },
-                    { last_name: { $regex: `^${search}`, $options: 'i' } },
-                    { role: { $regex: `^${role}`, $options: 'i' } }
-                ]
-            }//{ first_name: { $regex: `^${firstName}`, $options: 'i' } }
-            const totalData = await this.usersModel.find(qryObject).countDocuments();
-            const orderList = await this.usersModel.find(qryObject).skip(perPage * (page - 1)).limit(perPage)
+
+            const qryObjectFn = (search, role) => {
+                if (!search) {
+                    return { role: { $regex: `^${role}`, $options: 'i' } }
+                } else {
+                    return {
+                        $and: [
+                            { first_name: { $regex: `^${search}`, $options: 'i' } },
+                            { last_name: { $regex: `^${search}`, $options: 'i' } },
+                            { role: { $regex: `^${role}`, $options: 'i' } },
+                        ],
+                    }
+
+                }
+
+
+            }
+
+            // const qryObject = {
+            //     $and: [
+            //         { first_name: { $regex: `^${search}`, $options: 'i' } },
+            //         { last_name: { $regex: `^${search}`, $options: 'i' } },
+            //         { role: { $regex: `^${role}`, $options: 'i' } },
+            //     ],
+
+            //     // role: { $regex: `^${role}`, $options: 'i' }
+            // }//{ first_name: { $regex: `^${firstName}`, $options: 'i' } }
+            const totalData = await this.usersModel.find(qryObjectFn(search,role)).countDocuments();
+            const orderList = await this.usersModel.find(qryObjectFn(search,role)).skip(perPage * (page - 1)).limit(perPage)
 
             let totalPages: any = Math.ceil(totalData / perPage)
             let currentPage: any = page
