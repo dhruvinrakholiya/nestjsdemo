@@ -26,7 +26,7 @@ export class UsersController {
     }
 
     //Search Data
-    @Get('searchdata')
+    @Post('searchdata')
     @UseGuards(AuthGuard('jwt'), RolesGuard)
     @Roles('Management', 'Project Manager')
     async searchData(@Req() req,@Res() res){
