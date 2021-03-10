@@ -54,7 +54,7 @@ export class AuthService {
             userData.token = token.accessToken
             await userData.save()
 
-            return res.json({ statusCode: 200, message: "Login Success", data: { email: userData.email, _id: userData.id, token: userData.token } })
+            return res.json({ statusCode: 200, message: "Login Success", data: { email: userData.email, _id: userData.id, token: userData.token, role: userData.role } })
         } catch (error) {
             return res.json({ statusCode: 500, message: error.message, data: null })
         }
