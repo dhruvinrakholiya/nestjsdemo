@@ -22,14 +22,14 @@ export class AuthService {
             if (emailExist) throw new Error('User Already Exist')
 
             // Encrypt
-            userData.password = await bcrypt.hash(userData.password,saltRounds);
+            userData.password = await bcrypt.hash(userData.password, saltRounds);
             const userObject = await this.usersModel.create(userData)
-            if(userObject){
-                const userData = { ...userObject._doc};
+            if (userObject) {
+                const userData = { ...userObject._doc };
                 delete userData.password;
                 delete userData.token;
-            return res.json({ statusCode: 200, message: 'SignUp Successfully', data:userData });
-            }else{
+                return res.json({ statusCode: 200, message: 'SignUp Successfully', data: userData });
+            } else {
                 return res.json({ statusCode: 400, message: 'Singup Failed', data: null });
             }
         } catch (error) {
@@ -39,29 +39,29 @@ export class AuthService {
 
     async loginUser(req: Request, res: Response) {
         try {
-            let {email,password} = req.body
+            let { email, password } = req.body
             if (!(email && password)) throw new Error("Please Enter Data");
 
-            let userData: any = await this.usersModel.findOne({email})
+            let userData: any = await this.usersModel.findOne({ email })
             if (!userData) throw new Error("User not Found");
 
-            const comparePassword = await bcrypt.compare(password,userData.password)
-            if(!comparePassword){
+            const comparePassword = await bcrypt.compare(password, userData.password)
+            if (!comparePassword) {
                 return res.json({ statusCode: 400, message: "Invalid Password", data: null })
             }
-            
+
             const token = await this.createToken(userData.email, userData.role, userData._id)
             userData.token = token.accessToken
             await userData.save()
 
-            return res.json({ statusCode: 200, message: "Login Success", data: {email:userData.email,_id:userData.id,token:userData.token} })
+            return res.json({ statusCode: 200, message: "Login Success", data: { email: userData.email, _id: userData.id, token: userData.token } })
         } catch (error) {
             return res.json({ statusCode: 500, message: error.message, data: null })
         }
     }
 
-    async createToken(userEmail: String, userRole: String,userId:String) {
-        const payload = { email: userEmail, role: userRole,_id:userId }
+    async createToken(userEmail: String, userRole: String, userId: String) {
+        const payload = { email: userEmail, role: userRole, _id: userId }
         return { accessToken: this.jwtService.sign(payload) }
     }
 

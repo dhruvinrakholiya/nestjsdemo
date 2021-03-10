@@ -3,19 +3,25 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Request, Response } from "express";
 import { Model } from 'mongoose';
 import { Users } from '../auth/interface/users.interface';//src/auth/interface/users.interface
+import { profileUpload } from './fileUpload/file-upload';
+
 
 @Injectable()
 export class UsersService {
     constructor(@InjectModel('users') private usersModel: Model<Users>,) { }
 
     //Add User
-    async createUser(req: Request, res: Response) {
+    async createUser(file: any, req: Request, res: Response) {
         try {
             let userData = req.body
             // Check Email
             const userObject = await this.usersModel.findOne({ email: userData.email })
             if (userObject) throw new Error('User Already Exist')
-
+            if(file){
+                const imageFilePath = file.path;
+                const imageData = await profileUpload(imageFilePath)
+                userData.profile_pic = imageData;
+            }
             const createUserObject = await this.usersModel.create(userData)
             return res.status(200).json({ statusCode: 500, message: 'Create User Successfully', data: createUserObject })
         } catch (error) {
@@ -24,10 +30,15 @@ export class UsersService {
     }
 
     //Edit User
-    async editUsers(req: Request, res: Response) {
+    async editUsers(file: any, req: Request, res: Response) {
         try {
             const userId = req.params.id
-            let userData = req.body
+            let userData = req.body;
+            if(file){
+                const imageFilePath = file.path;
+                const imageData = await profileUpload(imageFilePath)
+                userData.profile_pic = imageData;
+            }
             const userObject = await this.usersModel.findOneAndUpdate({ _id: userId }, { $set: userData }, { new: true })
             if (!userObject) throw new Error('User not Found')
 
@@ -77,8 +88,8 @@ export class UsersService {
 
             //     // role: { $regex: `^${role}`, $options: 'i' }
             // }//{ first_name: { $regex: `^${firstName}`, $options: 'i' } }
-            const totalData = await this.usersModel.find(qryObjectFn(search,role)).countDocuments();
-            const orderList = await this.usersModel.find(qryObjectFn(search,role)).skip(perPage * (page - 1)).limit(perPage)
+            const totalData = await this.usersModel.find(qryObjectFn(search, role)).countDocuments();
+            const orderList = await this.usersModel.find(qryObjectFn(search, role)).skip(perPage * (page - 1)).limit(perPage)
 
             let totalPages: any = Math.ceil(totalData / perPage)
             let currentPage: any = page
