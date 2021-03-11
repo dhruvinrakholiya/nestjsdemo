@@ -89,7 +89,7 @@ export class UsersService {
             //     // role: { $regex: `^${role}`, $options: 'i' }
             // }//{ first_name: { $regex: `^${firstName}`, $options: 'i' } }
             const totalData = await this.usersModel.find(qryObjectFn(search, role)).countDocuments();
-            const orderList = await this.usersModel.find(qryObjectFn(search, role)).skip(perPage * (page - 1)).limit(perPage)
+            const orderList = await this.usersModel.find(qryObjectFn(search, role)).sort({ updatedAt: -1 }).skip(perPage * (page - 1)).limit(perPage)
 
             let totalPages: any = Math.ceil(totalData / perPage)
             let currentPage: any = page
