@@ -23,9 +23,9 @@ export class UsersService {
                 userData.profile_pic = imageData;
             }
             const createUserObject = await this.usersModel.create(userData)
-            return res.status(200).json({ statusCode: 500, message: 'Create User Successfully', data: createUserObject })
+            return res.status(200).json({ statusCode: 200, message: 'Create User Successfully', data: createUserObject })
         } catch (error) {
-            return res.status(200).json({ statusCode: 500, message: error.message, data: null })
+            return res.status(500).json({ statusCode: 500, message: error.message, data: null })
         }
     }
 
@@ -42,9 +42,9 @@ export class UsersService {
             const userObject = await this.usersModel.findOneAndUpdate({ _id: userId }, { $set: userData }, { new: true })
             if (!userObject) throw new Error('User not Found')
 
-            return res.status(200).json({ statusCode: 500, message: 'Update User Successfully', data: userObject })
+            return res.status(200).json({ statusCode: 200, message: 'Update User Successfully', data: userObject })
         } catch (error) {
-            return res.status(200).json({ statusCode: 500, message: error.message, data: null })
+            return res.status(500).json({ statusCode: 500, message: error.message, data: null })
         }
     }
 
@@ -95,9 +95,9 @@ export class UsersService {
             let currentPage: any = page
             if (currentPage > totalPages) throw new Error("Page not Found")
 
-            return res.json({ "status": 200, message: "SuccessFully Search", "Data": orderList, totalData, totalPages, currentPage })
+            return res.status(200).json({ statusCode: 200, message: "SuccessFully Search", data: orderList, totalData, totalPages, currentPage })
         } catch (error) {
-            return res.json({ "status": 500, message: error.message, "Data": null })
+            return res.status(500).json({ statusCode: 500, message: error.message, data: null })
         }
     }
 }

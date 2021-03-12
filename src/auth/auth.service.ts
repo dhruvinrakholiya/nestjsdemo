@@ -28,12 +28,12 @@ export class AuthService {
                 const userData = { ...userObject._doc };
                 delete userData.password;
                 delete userData.token;
-                return res.json({ statusCode: 200, message: 'SignUp Successfully', data: userData });
+                return res.status(200).json({ statusCode: 200, message: 'SignUp Successfully', data: userData });
             } else {
-                return res.json({ statusCode: 400, message: 'Singup Failed', data: null });
+                return res.status(400).json({ statusCode: 400, message: 'Singup Failed', data: null });
             }
         } catch (error) {
-            return res.json({ statusCode: 500, message: error.message, data: null })
+            return res.status(500).json({ statusCode: 500, message: error.message, data: null })
         }
     }
 
@@ -54,9 +54,9 @@ export class AuthService {
             userData.token = token.accessToken
             await userData.save()
 
-            return res.json({ statusCode: 200, message: "Login Success", data: { email: userData.email, _id: userData.id, token: userData.token, role: userData.role } })
+            return res.status(200).json({ statusCode: 200, message: "Login Success", data: { email: userData.email, _id: userData.id, token: userData.token, role: userData.role } })
         } catch (error) {
-            return res.json({ statusCode: 500, message: error.message, data: null })
+            return res.status(500).json({ statusCode: 500, message: error.message, data: null })
         }
     }
 
