@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsEmail, MaxLength, IsOptional } from 'class-validator'
+import { IsString, IsNotEmpty, IsEmail, MaxLength, IsOptional, MinLength } from 'class-validator'
 import { } from 'class-transformer'
 export class SignUpForUsers {
     @IsNotEmpty()
@@ -27,7 +27,7 @@ export class SignUpForUsers {
     gender: String;
 
     @IsOptional()
-    @MaxLength(8)
+    @MinLength(8)
     password: String;
 }
 
@@ -38,6 +38,6 @@ export class LoginForUsers {
     email: String;
 
     @IsNotEmpty()
-    @MaxLength(8)
+    @MinLength(8)
     password: String;
 }
